@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Счетчик пешеходов</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Детектор пешеходов на переходе</h1>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="fileInput">Выберите фото или видео:</label><br>
+            <input type="file" id="fileInput" name="file"><br><br>
+            <button type="submit" id="processBtn">Запустить обработку</button>
+        </form>
+
+        <hr>
+
+        <div id="resultSection" style="display:none;">
+            <h2>Результат обработки</h2>
+            <p>Количество найденных пешеходов: <span id="objectCount"></span></p>
+            <div id="mediaContainer"></div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
