@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 import uuid
 from ultralytics import YOLO
+import shutil
 
 # Настройки
 UPLOAD_FOLDER = 'uploads'
@@ -46,6 +47,31 @@ def upload_file():
         file.save(input_path)
 
         try:
+            # Очистка папок 
+            exp_dir = 'runs/detect/exp'
+            if os.path.exists(exp_dir):
+                for f in os.listdir(exp_dir):
+                    file_path = os.path.join(exp_dir, f)
+                    try:
+                        if os.path.isfile(file_path) or os.path.islink(file_path):
+                            os.unlink(file_path)
+                        elif os.path.isdir(file_path):
+                            shutil.rmtree(file_path)
+                    except Exception as e:
+                        print(f"Failed to delete {file_path}. Reason: {e}")
+
+            # Очистка папки runs/detect/results
+            results_base = 'runs/detect/results'
+            if os.path.exists(results_base):
+                for f in os.listdir(results_base):
+                    file_path = os.path.join(results_base, f)
+                    try:
+                        if os.path.isfile(file_path) or os.path.islink(file_path):
+                            os.unlink(file_path)
+                        elif os.path.isdir(file_path):
+                            shutil.rmtree(file_path)
+                    except Exception as e:
+                        print(f"Failed to delete {file_path}. Reason: {e}")
             # Детекция
             results = model.predict(
                 source=input_path,
