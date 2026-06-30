@@ -20,6 +20,7 @@ app.config['RESULTS_FOLDER'] = RESULTS_FOLDER
 
 model = YOLO(MODEL_PATH)
 
+#Проверка файла на соотвествие типу 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -47,7 +48,7 @@ def upload_file():
         file.save(input_path)
 
         try:
-            # Очистка папок 
+            # Очистка папки /runs/detect/exp 
             exp_dir = 'runs/detect/exp'
             if os.path.exists(exp_dir):
                 for f in os.listdir(exp_dir):
@@ -76,7 +77,7 @@ def upload_file():
             results = model.predict(
                 source=input_path,
                 project=app.config['RESULTS_FOLDER'],
-                name="",  # Пустой каталог
+                name="",  
                 save=True,
                 imgsz=640,
                 conf=0.25
